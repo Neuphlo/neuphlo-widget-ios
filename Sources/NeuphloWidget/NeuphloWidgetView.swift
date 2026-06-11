@@ -2,6 +2,28 @@
 import SwiftUI
 import WebKit
 
+enum NeuphloWidgetURL {
+    static func build(
+        widgetKey: String,
+        appURL: URL,
+        userId: String?,
+        userName: String?,
+        userEmail: String?
+    ) -> URL {
+        let base = appURL
+            .appendingPathComponent("widget")
+            .appendingPathComponent(widgetKey)
+        var components = URLComponents(url: base, resolvingAgainstBaseURL: false)
+        var items: [URLQueryItem] = []
+        if let userId { items.append(URLQueryItem(name: "uid", value: userId)) }
+        if let userName { items.append(URLQueryItem(name: "name", value: userName)) }
+        if let userEmail { items.append(URLQueryItem(name: "email", value: userEmail)) }
+        if !items.isEmpty { components?.queryItems = items }
+        return components?.url ?? base
+    }
+}
+
+
 /// Embeds the Neuphlo support chat for one workspace.
 ///
 /// Conversations land in the workspace inbox with the same
@@ -17,13 +39,23 @@ public struct NeuphloWidgetView: UIViewRepresentable {
     /// - Parameters:
     ///   - widgetKey: Workspace widget key from Inbox settings → Chat widget.
     ///   - appURL: Neuphlo app origin, for self-hosted installs.
+    ///   - userId: Your product's user id, stored on the conversation.
+    ///   - userName: Display name of the signed-in user.
+    ///   - userEmail: Email of the signed-in user, used to recognize them.
     public init(
         widgetKey: String,
-        appURL: URL = URL(string: "https://app.neuphlo.com")!
+        appURL: URL = URL(string: "https://app.neuphlo.com")!,
+        userId: String? = nil,
+        userName: String? = nil,
+        userEmail: String? = nil
     ) {
-        self.url = appURL
-            .appendingPathComponent("widget")
-            .appendingPathComponent(widgetKey)
+        self.url = NeuphloWidgetURL.build(
+            widgetKey: widgetKey,
+            appURL: appURL,
+            userId: userId,
+            userName: userName,
+            userEmail: userEmail
+        )
     }
 
     public func makeUIView(context: Context) -> WKWebView {
@@ -47,11 +79,18 @@ public final class NeuphloWidgetViewController: UIViewController {
 
     public init(
         widgetKey: String,
-        appURL: URL = URL(string: "https://app.neuphlo.com")!
+        appURL: URL = URL(string: "https://app.neuphlo.com")!,
+        userId: String? = nil,
+        userName: String? = nil,
+        userEmail: String? = nil
     ) {
-        self.url = appURL
-            .appendingPathComponent("widget")
-            .appendingPathComponent(widgetKey)
+        self.url = NeuphloWidgetURL.build(
+            widgetKey: widgetKey,
+            appURL: appURL,
+            userId: userId,
+            userName: userName,
+            userEmail: userEmail
+        )
         super.init(nibName: nil, bundle: nil)
     }
 
