@@ -39,6 +39,23 @@ let supportVC = NeuphloWidgetViewController(widgetKey: "your-widget-key")
 navigationController?.pushViewController(supportVC, animated: true)
 ```
 
+Identify the signed-in user so conversations are recognized in your inbox:
+
+```swift
+NeuphloWidgetView(
+    widgetKey: "your-widget-key",
+    userId: user.id,
+    userName: user.name,
+    userEmail: user.email,
+    userHash: user.neuphloHash
+)
+```
+
+`userHash` enables identity verification — compute it **on your backend**
+as HMAC-SHA256 of the user id, keyed with the widget identity secret from
+Inbox settings → Chat widget. Workspaces with "Require verified identities"
+enabled reject identified conversations without a valid hash.
+
 Self-hosted installs pass their own app origin:
 
 ```swift
