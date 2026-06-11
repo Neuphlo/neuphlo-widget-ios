@@ -1,6 +1,6 @@
 # NeuphloWidget for iOS
 
-Swift package embedding the [Neuphlo](https://neuphlo.com) support chat in your iOS app. Conversations land in your Neuphlo inbox with the same draft-and-approve flow as email.
+Swift package embedding the [Neuphlo](https://neuphlo.com) Messenger in your iOS app. Conversations land in your Neuphlo inbox with the same draft-and-approve flow as email.
 
 ## Install
 
@@ -53,7 +53,7 @@ NeuphloWidgetView(
 
 `userHash` enables identity verification — compute it **on your backend**
 as HMAC-SHA256 of the user id, keyed with the widget identity secret from
-Inbox settings → Chat widget. Workspaces with "Require verified identities"
+Inbox settings → Messenger. Workspaces with "Require verified identities"
 enabled reject identified conversations without a valid hash.
 
 Self-hosted installs pass their own app origin:
@@ -65,6 +65,6 @@ NeuphloWidgetView(
 )
 ```
 
-The widget key lives in **Inbox settings → Chat widget** in your Neuphlo workspace. The visitor session persists across launches.
+The widget key lives in **Inbox settings → Messenger** in your Neuphlo workspace. The visitor session persists across launches.
 
 Requires iOS 15+.

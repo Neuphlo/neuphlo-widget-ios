@@ -26,7 +26,7 @@ enum NeuphloWidgetURL {
 }
 
 
-/// Embeds the Neuphlo support chat for one workspace.
+/// Embeds the Neuphlo Messenger for one workspace.
 ///
 /// Conversations land in the workspace inbox with the same
 /// draft-and-approve flow as email. The visitor session persists
@@ -39,7 +39,7 @@ public struct NeuphloWidgetView: UIViewRepresentable {
     private let url: URL
 
     /// - Parameters:
-    ///   - widgetKey: Workspace widget key from Inbox settings → Chat widget.
+    ///   - widgetKey: Workspace widget key from Inbox settings → Messenger.
     ///   - appURL: Neuphlo app origin, for self-hosted installs.
     ///   - userId: Your product's user id, stored on the conversation.
     ///   - userName: Display name of the signed-in user.
