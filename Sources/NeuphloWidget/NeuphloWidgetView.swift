@@ -8,7 +8,8 @@ enum NeuphloWidgetURL {
         appURL: URL,
         userId: String?,
         userName: String?,
-        userEmail: String?
+        userEmail: String?,
+        userHash: String? = nil
     ) -> URL {
         let base = appURL
             .appendingPathComponent("widget")
@@ -18,6 +19,7 @@ enum NeuphloWidgetURL {
         if let userId { items.append(URLQueryItem(name: "uid", value: userId)) }
         if let userName { items.append(URLQueryItem(name: "name", value: userName)) }
         if let userEmail { items.append(URLQueryItem(name: "email", value: userEmail)) }
+        if let userHash { items.append(URLQueryItem(name: "uhash", value: userHash)) }
         if !items.isEmpty { components?.queryItems = items }
         return components?.url ?? base
     }
@@ -42,19 +44,23 @@ public struct NeuphloWidgetView: UIViewRepresentable {
     ///   - userId: Your product's user id, stored on the conversation.
     ///   - userName: Display name of the signed-in user.
     ///   - userEmail: Email of the signed-in user, used to recognize them.
+    ///   - userHash: Server-computed HMAC-SHA256 of the user id (or email),
+    ///     keyed with the workspace's widget identity secret.
     public init(
         widgetKey: String,
         appURL: URL = URL(string: "https://app.neuphlo.com")!,
         userId: String? = nil,
         userName: String? = nil,
-        userEmail: String? = nil
+        userEmail: String? = nil,
+        userHash: String? = nil
     ) {
         self.url = NeuphloWidgetURL.build(
             widgetKey: widgetKey,
             appURL: appURL,
             userId: userId,
             userName: userName,
-            userEmail: userEmail
+            userEmail: userEmail,
+            userHash: userHash
         )
     }
 
@@ -82,14 +88,16 @@ public final class NeuphloWidgetViewController: UIViewController {
         appURL: URL = URL(string: "https://app.neuphlo.com")!,
         userId: String? = nil,
         userName: String? = nil,
-        userEmail: String? = nil
+        userEmail: String? = nil,
+        userHash: String? = nil
     ) {
         self.url = NeuphloWidgetURL.build(
             widgetKey: widgetKey,
             appURL: appURL,
             userId: userId,
             userName: userName,
-            userEmail: userEmail
+            userEmail: userEmail,
+            userHash: userHash
         )
         super.init(nibName: nil, bundle: nil)
     }
